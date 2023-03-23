@@ -623,6 +623,11 @@ input{
   border-right: 1px solid rgb(171, 171, 171);
 }
 
+.bg-welcome{
+  background-color: #12002b;
+  padding-bottom: 30PX;
+}
+
 @media (max-width: 920px){
   .ctn-features {
       flex-direction: column;
@@ -637,5 +642,11 @@ input{
   }
   .nav-right > div{
     margin: .5rem;
+  }
+}
+
+@media (max-width: 555px){
+  .account {
+    flex-direction: column;
   }
 }

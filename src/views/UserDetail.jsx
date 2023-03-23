@@ -37,7 +37,7 @@ function UserDetail() {
     return (
         <div>
             <Navbar userInfos={userInfos}/>
-            <div className="bg-sign">
+            <div className="bg-welcome">
                 <div className="welcomeBack">
                     Welcome back <br/>
                     {userInfos.firstName + ' ' + userInfos.lastName + ' !' }
