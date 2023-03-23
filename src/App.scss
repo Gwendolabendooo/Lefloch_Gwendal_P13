@@ -20,6 +20,10 @@ body{
   transition: background .4s, color .4s;
 }
 
+.text-white{
+  color: white;
+}
+
 .border-primary{
   border-color: $primary;
 }
@@ -58,4 +62,14 @@ body{
 
 .bg-warning{
   background-color: $warning;
+}
+
+.bg-success{
+  background-color: #00bc77;
+  border: none;
+}
+
+button{
+  text-decoration: underline;
+  padding: 10px 15px;
 }
