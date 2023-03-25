@@ -626,6 +626,21 @@ input{
 .bg-welcome{
   background-color: #12002b;
   padding-bottom: 30PX;
+  min-height: calc(100vh - 214px);
+}
+
+.formEdit{
+  width: 400px;
+  max-width: 90%;
+  margin: auto;
+  background: white;
+  padding: 25px;
+  margin-bottom: 30px;
+}
+
+.text-underline:hover{
+  cursor: pointer;
+  text-decoration: underline;
 }
 
 @media (max-width: 920px){

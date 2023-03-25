@@ -1,4 +1,5 @@
 import React, { useState, setState, useEffect } from "react";
+import { connect } from 'react-redux';
 
 //components
 import Navbar from "../components/navbar";
@@ -8,19 +9,37 @@ import { useNavigate } from 'react-router-dom';
 
 
 //service
-import { UserInfos } from '../service'
+import { UserInfos, editUser } from '../service'
 
-function UserDetail() {
+const mapStateToProps = (state) => ({
+    token: state.token,
+    });
+
+function UserDetail({token}) {
     const [userInfos, setUserInfos] = useState({});
+    const [editName, setEditName] = useState(false);
     const navigate = useNavigate();
+    const [newToken, setNewToken] = useState(null);
+
+    //const
+    const [identifiants, setIdentifiants] = useState({
+        email: '',
+        password: ''
+    })
 
     // get Data after update state
     useEffect(() => {
-        const token = JSON.parse(localStorage.getItem('token'));
-        if (token !== 'null') {
-            getUserInfos(token)
+        if (token == null) {
+            if (JSON.parse(localStorage.getItem('token')) != null) {
+                token = JSON.parse(localStorage.getItem('token'));
+                setNewToken(token)
+                getUserInfos(token)   
+            } else {
+                navigate('/SignIn');
+            }
         } else {
-            navigate('/SignIn');
+            setNewToken(token)
+            getUserInfos(token)
         }
     }, [])
 
@@ -33,7 +52,22 @@ function UserDetail() {
         }
     }
 
+    async function EditUserInfos(token) {
+        try {
+            await editUser(identifiants, token);
+            setUserInfos(identifiants)
+            setEditName(false)
+          } catch (error) {
+            console.error(error);
+        }
+    }
     
+    const handleSubmit = (event) => {
+        event.preventDefault();
+    
+        EditUserInfos(newToken)
+    };
+
     return (
         <div>
             <Navbar userInfos={userInfos}/>
@@ -43,8 +77,45 @@ function UserDetail() {
                     {userInfos.firstName + ' ' + userInfos.lastName + ' !' }
                 </div>
                 <div className="m-auto text-center mb-3">
-                    <button type="submit" className="bg-success text-white font-weight-bold font-18 mt-2">Edit name</button>
+                    <button type="submit" className="bg-success text-white font-weight-bold font-18 mt-2" onClick={() => setEditName(true)}>Edit name</button>
                 </div>
+                {editName ? 
+                    <form onSubmit={handleSubmit} className="d-flex flex-column formEdit">
+                        <label htmlFor="username" className="font-weight-bold font-16">
+                            New firstName
+                        </label>
+                        <input 
+                            type="text" 
+                            name="firstname" 
+                            id="firstname" 
+                            className="mb-3"
+                            value={identifiants.firstName}
+                            onChange={(event) =>
+                                setIdentifiants({
+                                    firstName : event.target.value,
+                                    lastName : identifiants.lastName
+                                })
+                            } 
+                        />
+                        <label className="font-weight-bold font-16">
+                            New lastName
+                        </label>
+                        <input 
+                            type="text" 
+                            name="lastname" 
+                            id="lastname" 
+                            className="mb-3" 
+                            value={identifiants.lastName}
+                            onChange={(event) =>
+                                setIdentifiants({
+                                    firstName : identifiants.firstName,
+                                    lastName : event.target.value
+                                })
+                            } 
+                        />
+                        <button type="submit" className="w-100 bg-success text-white font-weight-bold font-18 mt-2">Change infos</button>
+                    </form> 
+                : null}
                 <section class="account">
                     <div class="account-content-wrapper">
                     <h3 class="account-title">Argent Bank Savings (x6712)</h3>
@@ -81,4 +152,4 @@ function UserDetail() {
     )
   }
   
-export default UserDetail;
+export default connect(mapStateToProps)(UserDetail);

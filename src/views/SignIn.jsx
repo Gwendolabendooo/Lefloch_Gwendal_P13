@@ -21,6 +21,8 @@ function Login({ setToken }) { // Modification de la fonction Login pour utilise
         password: ''
     });
 
+    const [checked, setChecked] = useState(false);
+
     const navigate = useNavigate();
 
     // get Data after update state
@@ -36,7 +38,9 @@ function Login({ setToken }) { // Modification de la fonction Login pour utilise
         try {
             const log = await login(identifiants);
             setToken(log);
-            localStorage.setItem('token', JSON.stringify(log));
+            if (checked) {
+                localStorage.setItem('token', JSON.stringify(log));
+            }
             navigate('/UserDetail');
           } catch (error) {
             console.error(error);
@@ -94,7 +98,7 @@ function Login({ setToken }) { // Modification de la fonction Login pour utilise
                             } 
                         />
                         <div className="d-flex">
-                            <input type="checkbox" name="remember" id="remember" />
+                            <input type="checkbox" name="remember" id="remember" onChange={(e) => e.target.checked ? setChecked(true) : setChecked(false)}/>
                             <label htmlFor="remember"  className="font-16 ml-2">
                                 Remember me
                             </label>
