@@ -6,8 +6,7 @@ axios.defaults.baseURL = 'http://localhost:3001/api/v1/user';
 export async function login(identifiants) {
   try {
     const response = await axios.post('/login', identifiants);
-    const token = response.data.body.token;
-    return token;
+    return response.data.body.token;
   } catch (error) {
     console.error(error);
     throw error;
@@ -19,8 +18,7 @@ export async function UserInfos(token) {
     const response = await axios.post('/profile', null, {
       headers: { 'Authorization': `Bearer ${token}` }
     });
-    const data = response.data.body;
-    return data;
+    return response.data.body;
   } catch (error) {
     console.error(error);
     throw error;
@@ -28,7 +26,6 @@ export async function UserInfos(token) {
 }
 
 export async function editUser (identifiants, token) {
-  console.log(identifiants, token)
   return await axios.put('/profile', {
     firstName: identifiants.firstName,
     lastName: identifiants.lastName,
