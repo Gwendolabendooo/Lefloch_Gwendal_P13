@@ -16,7 +16,10 @@ const mapStateToProps = (state) => ({
     });
 
 function UserDetail({token}) {
-    const [userInfos, setUserInfos] = useState({});
+    const [userInfos, setUserInfos] = useState({
+        firstName: '',
+        lastName: ''
+    });
     const [editName, setEditName] = useState(false);
     const navigate = useNavigate();
     const [newToken, setNewToken] = useState(null);
